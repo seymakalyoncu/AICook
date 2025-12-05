@@ -42,7 +42,7 @@ const ChangePasswordFormPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
+              className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
               placeholder="Şifre"
             />
             <input
@@ -50,7 +50,7 @@ const ChangePasswordFormPage = () => {
               value={passwordRepeat}
               onChange={(e) => setPasswordRepeat(e.target.value)}
               required
-              className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
+              className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
               placeholder="Şifre Tekrar"
             />
           </div>
@@ -60,7 +60,7 @@ const ChangePasswordFormPage = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bg-[#FF6600] text-white px-6 py-2 rounded-xl hover:bg-[#e65500] transition-colors"
+            className="bg-[#4294ff] text-white px-6 py-2 rounded-xl hover:bg-[#84cafe] transition-colors"
           >
             Şifreyi Güncelle
           </button>

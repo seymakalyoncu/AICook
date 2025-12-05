@@ -1,51 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from "react-hot-toast";
-import { getNationatilies } from "../../services/nationatilies";
-import { getGenders } from "../../services/genders";
-import { getEducations } from "../../services/educations";
-import { getCities } from "../../services/cities";
-import { getDistricts } from "../../services/districts";
-import { getParentById, updateParent } from "../../services/parents"; 
-import { updateUser } from '../../services/accounts';
+import { getGender } from "../../services/gender";
+import { getUserById, updateUser } from "../../services/users"; 
+import { updateUsers } from '../../services/accounts';
 
 const UserEditPage = () => {
-  const [nationalities, setNationalities] = useState([]);
-  const [genders, setGenders] = useState([]);
-  const [educations, setEducations] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [districts, setDistricts] = useState([]);
+  const [gender, setGender] = useState([]);
+
   
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
     username: '',
-    email: '',
-    city: '',
-    district: '',
+    email: '',  
     birthDate: '',
     gender: '',
-    nationality: '',
-    education: '',
     user_id: '',
   });
 
   const token = localStorage.getItem("token");
-  const parentId = localStorage.getItem("parent_id");
+  const userId = localStorage.getItem("user_id");
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchSelects = async () => {
       try {
-        const [nationRes, genderRes, educationRes, cityRes] = await Promise.all([
-          getNationatilies(),
-          getGenders(),
-          getEducations(),
-          getCities()
-        ]);
-        setNationalities(nationRes.data);
-        setGenders(genderRes.data);
-        setEducations(educationRes.data);
-        setCities(cityRes.data);
+        const [ genderRes] = await Promise.all([
+          getGender()
+        ]);      
+        setGender(genderRes.data);
       } catch (err) {
         toast.error("Seçenekler yüklenirken hata oluştu.");
       }
@@ -56,9 +39,9 @@ const UserEditPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!parentId) return;
+      if (!userId) return;
       try {
-        const res = await getParentById(parentId, token);
+        const res = await getUserById(userId, token);
         const user = res.data;
 
         const birthDate = `${user.birth_year}-${String(user.birth_month).padStart(2, '0')}-${String(user.birth_day).padStart(2, '0')}`;
@@ -68,46 +51,18 @@ const UserEditPage = () => {
         surname: user.surname || '',
         username: user.username || '',
         email: user.email || '',
-        city: user.city || '',
-        district: user.districts || '',  // districts alanını kullan
         birthDate: birthDate,
         gender: user.gender?.toString() || '',
-        nationality: user.nationality?.toString() || '',
-        education: user.education?.toString() || '',
         user_id: user.user_id?.toString() || '', 
         });
 
-
-        const cityId = user.city_id || user.city;
-        if (cityId) {
-          const districtRes = await getDistricts(cityId);
-          setDistricts(districtRes.data);
-        } else {
-          setDistricts([]);
-        }
       } catch (err) {
         toast.error("Kullanıcı bilgileri yüklenemedi.");
       }
     };
 
     fetchUserData();
-  }, [parentId, token]);
-
-  const handleCityChange = async (e) => {
-    const cityId = e.target.value;
-    setFormData((prev) => ({ ...prev, city: cityId, district: '' }));
-
-    if (cityId) {
-      try {
-        const res = await getDistricts(cityId);
-        setDistricts(res.data);
-      } catch {
-        toast.error("İlçeler yüklenirken hata oluştu.");
-      }
-    } else {
-      setDistricts([]);
-    }
-  };
+  }, [userId, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -117,14 +72,10 @@ const UserEditPage = () => {
     const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-        if (!formData.district) {
-        toast.error("Lütfen ilçe seçiniz.");
-        return;
-        }
-
+        
         const [birth_year, birth_month, birth_day] = formData.birthDate.split('-');
 
-        const parentUpdateData = {
+        const userUpdateData = {
         ...formData,
         birth_year: Number(birth_year),
         birth_month: Number(birth_month),
@@ -133,13 +84,13 @@ const UserEditPage = () => {
         updateddate: new Date().toISOString(),
         };
 
-        const userUpdateData = {
+        const usersUpdateData = {
         first_name: formData.name,
         last_name: formData.surname,
         };
 
-        await updateParent(parentId, parentUpdateData, token);
-        await updateUser(formData.user_id, userUpdateData, token);
+        await updateUser(userId, userUpdateData, token);
+        await updateUsers(formData.user_id, usersUpdateData, token);
 
         toast.success("Kullanıcı bilgileri başarıyla güncellendi.");
     } catch (err) {
@@ -162,7 +113,7 @@ const UserEditPage = () => {
               placeholder="Ad"
               value={formData.name}
               onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
+              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
             />
             <input
               type="text"
@@ -170,7 +121,7 @@ const UserEditPage = () => {
               placeholder="Soyad"
               value={formData.surname}
               onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
+              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
             />
             <input
               type="date"
@@ -186,70 +137,26 @@ const UserEditPage = () => {
                 setFormData({ ...formData, birthDate: value });
               }
             }}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
-            />
-            <select
-              name="nationality"
-              value={formData.nationality}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
-            >
-              <option value="">Uyruk Seçiniz</option>
-              {nationalities.map((nat) => (
-                <option key={nat.id} value={nat.id}>{nat.name}</option>
-              ))}
-            </select>
+              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
+            />           
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
+              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
             >
               <option value="">Cinsiyet Seçiniz</option>
-              {genders.map((gender) => (
+              {gender.map((gender) => (
                 <option key={gender.id} value={gender.id}>{gender.name}</option>
               ))}
-            </select>
-            <select
-              name="education"
-              value={formData.education}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
-            >
-              <option value="">Eğitim Durumu Seçiniz</option>
-              {educations.map((edu) => (
-                <option key={edu.id} value={edu.id}>{edu.name}</option>
-              ))}
-            </select>
-            <select
-              name="city"
-              value={formData.city}
-              onChange={handleCityChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
-            >
-              <option value="">İl Seçiniz</option>
-              {cities.map((city) => (
-                <option key={city.id} value={city.id}>{city.name}</option>
-              ))}
-            </select>
-            <select
-              name="district"
-              value={formData.district}
-              onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]"
-            >
-              <option value="">İlçe Seçiniz</option>
-              {districts.map((district) => (
-                <option key={district.id} value={district.id}>{district.name}</option>
-              ))}
-            </select>
+            </select>         
             <input
               type="email"
               name="email"
               placeholder="E-posta"
               value={formData.email}
               onChange={handleChange}
-              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D] col-span-2"
+              className="border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff] col-span-2"
               disabled={!!formData.email}
             />
           </div>
@@ -258,7 +165,7 @@ const UserEditPage = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bg-[#FF6600] text-white px-6 py-2 rounded-xl hover:bg-[#e65500]"
+            className="bg-[#4294ff] text-white px-6 py-2 rounded-xl hover:bg-[#e65500]"
           >
             Güncelle
           </button>
