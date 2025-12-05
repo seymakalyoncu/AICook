@@ -34,11 +34,8 @@ const ResetPasswordPage = () => {
             return;
         }
 
-        // servis bağlantısı
         const uid = searchParams.get("uid");
         const token = searchParams.get("token");
-        // console.log("uid: " + uid);
-        // console.log("token: " + token);
 
         let data = {uid: uid, token: token, new_password: form.password }
 
@@ -61,26 +58,26 @@ const ResetPasswordPage = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFFFFF] text-[#444444] font-sans px-4 py-8">
         <div className="flex flex-col items-center mb-8">
             <img src="/aicook-logo.png" alt="AICOOK Logo" className="h-32"/>
-            <h2 className="text-[24px] font-semibold mt-4 text-center">AI Tracking for Kids Development</h2>
+            <h2 className="text-[24px] font-semibold mt-4 text-center">AI Cooking Assistant</h2>
              <Toaster />
         </div>
 
         <div className="bg-white border border-[#DDDDDD] rounded-2xl shadow p-8 w-full max-w-sm">
             <form onSubmit={handleResetPassword}>
             <div className="mb-4">
-                <input type="password" name="password" placeholder="Şifre" onBlur={handleChange} required className="w-full px-3 py-2 border border-[#DDDDDD] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]" />
+                <input type="password" name="password" placeholder="Şifre" onBlur={handleChange} required className="w-full px-3 py-2 border border-[#DDDDDD] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]" />
             </div>
             <div className="mb-4">
-                <input type="password" name="password_again" placeholder="Şifre Tekrar" onBlur={handleChange} required className="w-full px-3 py-2 border border-[#DDDDDD] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFB74D]" />
+                <input type="password" name="password_again" placeholder="Şifre Tekrar" onBlur={handleChange} required className="w-full px-3 py-2 border border-[#DDDDDD] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]" />
             </div>
 
-            <button type="submit" className="w-full bg-[#FF6600] hover:bg-[#e65c00] text-white font-semibold py-2 rounded-xl transition">
+            <button type="submit" className="w-full bg-[#4294ff] hover:bg-[#84cafe] text-white font-semibold py-2 rounded-xl transition">
                 Kaydet
             </button>
             </form>
 
             <div className="text-[14px] text-[#999999] mt-6 text-center">
-            <button onClick={() => navigate('/authentication/login')} className="text-[#D95F45] font-medium hover:underline">
+            <button onClick={() => navigate('/authentication/login')} className="text-[#4294ff] font-medium hover:underline">
                 Geri Dön
             </button>
             </div>
