@@ -11,7 +11,7 @@ from django.contrib.auth.tokens import default_token_generator
 from utils.token import verify_token
 from .serializers import RegisterSerializer
 from users.serializers import UsersSerializer
-from users.models import User
+from users.models import Users
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime
@@ -87,9 +87,9 @@ class UserInfoView(APIView):
 
     def get(self, request):
 
-        user_id = request.query_params.get('user_id')
+        # user_id = request.query_params.get('user_id')
         user = request.user
-        user = User.objects.get(user_id = user.id)
+        # users = User.objects.get(user_id = user.id)
         response = {
             "id": user.id,
             "user_id": user.id,

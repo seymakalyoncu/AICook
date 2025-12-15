@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { authLogin } from "../../services/accounts";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
+  
   const handleLogin = async (e) => {
     e.preventDefault();
 

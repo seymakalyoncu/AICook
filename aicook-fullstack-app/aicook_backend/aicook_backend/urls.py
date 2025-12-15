@@ -24,4 +24,5 @@ urlpatterns = [
     path('api/', include('articles.urls')),
     path('api/', include('gender.urls')),
     path('api/', include('users.urls')),
+    path('api/', include('chat.urls')),
 ]

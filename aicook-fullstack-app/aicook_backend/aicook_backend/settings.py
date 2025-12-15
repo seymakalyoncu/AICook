@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'articles',
     'gender',
     'users',
+    'core',
 ]
 
 MIDDLEWARE = [

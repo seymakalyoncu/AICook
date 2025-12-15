@@ -18,6 +18,5 @@ class Users(models.Model):
     user_id = models.ForeignKey(User, models.DO_NOTHING, db_column='user_id')
     
     class Meta:
-        managed = False
         db_table = 'users'
         db_table_comment = 'Kullanıcıların Bilgisi'

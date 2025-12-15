@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import VaccinationRecordController
+from .views import ChatController
 
 router = DefaultRouter()
-router.register(r'vaccination_records', VaccinationRecordController, basename='vaccination_record')
+router.register(r'openai', ChatController, basename='openai')
 
 urlpatterns = [
     path('', include(router.urls)),

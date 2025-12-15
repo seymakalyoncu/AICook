@@ -9,6 +9,5 @@ class Gender(models.Model):
     updateddate = models.DateTimeField(db_column='update_date', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'gender'
         db_table_comment = 'Cinsiyet Bilgileri'
