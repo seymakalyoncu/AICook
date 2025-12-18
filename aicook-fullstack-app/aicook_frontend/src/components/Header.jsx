@@ -194,18 +194,19 @@ const Header = () => {
       {/* CHAT MODAL */}
       {chatOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 font-sans">
-          <div className="bg-white rounded-2xl w-[90%] max-w-md p-5 shadow-xl flex flex-col">
+          <div className="bg-white rounded-2xl w-[90%] max-w-md p-6 shadow-xl flex flex-col">
 
-            <h2 className="text-[22px] font-semibold text-[#444444] tracking-wide mb-4 text-center">
+            <h2 className="text-2xl font-semibold text-[#444444] mb-6 leading-snug tracking-wide">
               Sohbet
             </h2>
 
             {/* MESAJLAR */}
             <div 
               ref={chatContainerRef}
-              className="flex-1 border border-[#DDDDDD] rounded-lg p-3 mb-4 overflow-y-auto max-h-80 bg-[#f9f9f9] text-[14px]">
+              className="flex-1 border border-[#DDDDDD] rounded-lg p-3 mb-4 overflow-y-auto max-h-80 bg-[#f9f9f9] text-[14px]"
+            >
               {chatMessages.length === 0 && (
-                <div className="text-[#999999]">Henüz mesaj yok</div>
+                <div className="text-[#999999] text-[14px]">Henüz mesaj yok</div>
               )}
 
               {chatMessages.map((msg, idx) => (
@@ -213,14 +214,14 @@ const Header = () => {
 
                   {/* USER MESSAGE — SAĞA */}
                   <div className="flex justify-end mb-1">
-                    <div className="bg-[#4294ff] text-white px-3 py-2 rounded-lg max-w-[80%]">
+                    <div className="bg-[#4294ff] text-white px-6 py-2 rounded-xl max-w-[80%]">
                       {msg.question}
                     </div>
                   </div>
 
                   {/* BOT MESSAGE — SOLA */}
                   <div className="flex justify-start">
-                    <div className="bg-[#eaeaea] text-[#444444] px-3 py-2 rounded-lg max-w-[80%]">
+                    <div className="bg-[#DDDDDD] text-[#444444] px-4 py-2 rounded-xl max-w-[80%]">
                       {msg.answer}
                     </div>
                   </div>
@@ -232,43 +233,39 @@ const Header = () => {
             {/* YAZMA ALANI */}
             <textarea
               placeholder="Yemek, tarif veya besinlerle ilgili bir soru sorun..."
-              className="border border-[#DDDDDD] rounded-lg px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#e6ecff] mb-4 resize-none"
+              className="border border-[#DDDDDD] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#e6ecff] mb-4 resize-none"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               rows={3}
             />
 
             {/* BUTONLAR */}
-            <div className="flex justify-between gap-2">
-              
-              {/* TEMİZLE */}
+            <div className="flex justify-between gap-3">
               <button
                 onClick={() => setChatMessages([])}
-                className="flex-1 px-6 py-2 border border-[#DDDDDD] rounded-lg text-[14px] text-[#444444] hover:bg-[#f5f5f5] transition"
+                className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]"
               >
                 Temizle
               </button>
 
-              {/* KAPAT */}
               <button
                 onClick={() => setChatOpen(false)}
-                className="flex-1 px-6 py-2 border border-[#DDDDDD] rounded-lg text-[14px] text-[#444444] hover:bg-[#f5f5f5] transition"
+                className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]"
               >
                 Kapat
               </button>
 
-              {/* GÖNDER */}
               <button
                 onClick={handleSendMessage}
-                className="flex-1 px-6 py-2 bg-[#4294ff] text-white rounded-lg text-[14px] font-medium hover:bg-[#84cafe] transition"
+                className="flex-1 px-6 py-2 rounded-xl border bg-[#4294ff] text-white px-6 py-2 rounded-xl hover:bg-[#84cafe]"
               >
                 Gönder
               </button>
             </div>
-
           </div>
         </div>
       )}
+
 
     </>
   );

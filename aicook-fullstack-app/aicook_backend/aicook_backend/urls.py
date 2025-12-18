@@ -1,19 +1,3 @@
-"""
-URL configuration for aicook_backend project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 
@@ -25,4 +9,14 @@ urlpatterns = [
     path('api/', include('gender.urls')),
     path('api/', include('users.urls')),
     path('api/', include('chat.urls')),
+    path('api/', include('categories.urls')),
+    path('api/', include('ingredients.urls')),
+    path('api/', include('cooking_area_type.urls')),
+    path('api/', include('time_type.urls')),
+    path("api/", include("unit_type.urls")),
+    path("api/", include("recipe_ingredients.urls")),
+    path("api/recipes/", include("recipes.urls")),
+    path("api/favorite/", include("favorite_recipes.urls")),
+    path("api/meal_histories/", include("meal_histories.urls")),
+
 ]

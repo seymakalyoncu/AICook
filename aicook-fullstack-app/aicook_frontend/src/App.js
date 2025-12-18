@@ -7,17 +7,14 @@ import RegisterPage from './pages/Authentication/RegisterPage';
 import ResetPasswordPage from './pages/Authentication/ResetPasswordPage';
 import ResetPasswordConfirmPage from './pages/Authentication/ResetPasswordConfirmPage';
 import VerifyEmailPage from './pages/Authentication/VerifyEmailPage'
-
-
 import HomePage from "./pages/Dashboard/HomePage";
-
 import UserEdit from "./pages/Dashboard/UserEdit";
 import UserChangePassword from "./pages/Dashboard/UserChangePassword";
-
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import ArticlePage from './pages/Dashboard/ArticlesPage';
+import FavoriteRecipes from "./pages/Dashboard/FavoriteRecipes";
+import HistoryRecipes from "./pages/Dashboard/HistoryRecipes";
 
 
 function App() {
@@ -40,6 +37,8 @@ function App() {
             <Route path="/" element={<HomePage />} />     
             <Route path="/user/edit" element={<UserEdit />} />
             <Route path="/user/change-password" element={<UserChangePassword />} />
+            <Route path="/favorites" element={<FavoriteRecipes />} />
+            <Route path="/histories" element={<HistoryRecipes />} />
           </Route>
         </Routes>
       </Router>

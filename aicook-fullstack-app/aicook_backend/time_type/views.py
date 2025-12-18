@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import TimeType
+from .serializers import TimeTypeSerializer
 
-# Create your views here.
+class TimeTypeController(viewsets.ModelViewSet):
+    permission_classes = []  # Sadece giriş yapmış kullanıcılar
+    authentication_classes = []  # Cookie veya Token kabul eder
+
+    queryset = TimeType.objects.all()
+    serializer_class = TimeTypeSerializer

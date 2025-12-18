@@ -36,7 +36,7 @@ const LoginPage = () => {
       
       clearTimeout(timer);
       
-      toast.success("Giriş başarılı! Anasayfaya yönlendiriliyorsunuz...");
+      
       navigate('/');
 
     } catch (error) {
