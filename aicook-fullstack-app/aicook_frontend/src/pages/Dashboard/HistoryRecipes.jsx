@@ -5,27 +5,25 @@ import { getFavoriteStatus, toggleFavoriteRecipe } from "../../services/favorite
 
 export default function HistoryRecipes() {
   const token = localStorage.getItem("token");
-  const [recipes, setRecipes] = useState([]); // Burada meal_histories ve recipe bilgilerini tutacağız
+  const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openedId, setOpenedId] = useState(null);
-  const [favoriteStatus, setFavoriteStatus] = useState({}); // Favori durumu
+  const [favoriteStatus, setFavoriteStatus] = useState({});
 
-  // Meal histories'i çek
   const fetchHistories = async () => {
     setLoading(true);
     try {
       const res = await getMealHistories(token);
-      // res.data => array of meal_histories, her biri recipe bilgisi ile
-      setRecipes(res.data || []);
+      const data = res.data || [];
+      setRecipes(data);
 
-      // Favori durumlarını çek
       const favStatus = {};
-      for (const mh of res.data || []) {
+      for (const mh of data) {
         try {
-          const favRes = await getFavoriteStatus(mh.recipe.id, token);
-          favStatus[mh.recipe.id] = favRes.data.active === 1;
-        } catch (e) {
-          favStatus[mh.recipe.id] = false;
+          const favRes = await getFavoriteStatus(mh.recipe_id, token);
+          favStatus[mh.recipe_id] = favRes.data.active === 1;
+        } catch {
+          favStatus[mh.recipe_id] = false;
         }
       }
       setFavoriteStatus(favStatus);
@@ -35,6 +33,30 @@ export default function HistoryRecipes() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const d = new Date(dateStr);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 10; i++) {
+      stars.push(
+        <img
+          key={i}
+          src={i <= (rating || 0) ? "/star_blue.png" : "/star.png"}
+          alt="star"
+          className="w-4 h-4"
+        />
+      );
+    }
+    return stars;
   };
 
   useEffect(() => {
@@ -55,64 +77,66 @@ export default function HistoryRecipes() {
 
   return (
     <div className="p-4 pb-24">
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" />
 
       <h1 className="text-2xl font-semibold text-[#444444] mb-6">
         Yemek Geçmişi
       </h1>
 
-      {!loading && (!recipes || recipes.length === 0) && (
+      {!loading && recipes.length === 0 && (
         <p className="text-center text-gray-500">Henüz yemek geçmişi yok</p>
       )}
 
       <div className="space-y-4">
-        {(recipes || []).map(mh => {
-          const recipe = mh.recipe; // meal_history içerisindeki recipe bilgisi
-          const isOpen = openedId === mh.id;
+        {recipes.map(mh => {
+          const isOpen = openedId === mh.meal_history_id;
 
           return (
-            <div key={mh.id} className="border rounded-lg p-4 shadow-sm">
+            <div key={mh.meal_history_id} className="border rounded-lg p-4 shadow-sm">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  {/* FAVORİ ICON */}
                   <img
-                    src={favoriteStatus[recipe.id] ? "/love_blue.png" : "/love.png"}
+                    src={favoriteStatus[mh.recipe_id] ? "/love_blue.png" : "/love.png"}
                     alt="favorite"
-                    onClick={() => toggleFavorite(recipe)}
+                    onClick={() => toggleFavorite(mh.recipe_id)}
                     className="w-6 h-6 cursor-pointer hover:scale-110 transition"
                   />
-                  <span className="font-medium">{recipe.title}</span>
+                  <span className="font-medium">{mh.title}</span>
                 </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setOpenedId(isOpen ? null : mh.id)}
-                    className="bg-[#4294ff] text-white px-6 py-2 rounded-lg text-sm hover:bg-[#84cafe]"
-                  >
-                    {isOpen ? "Kapat" : "Aç"}
-                  </button>
-                </div>
+                <button
+                  onClick={() => setOpenedId(isOpen ? null : mh.meal_history_id)}
+                  className="bg-[#4294ff] text-white px-6 py-2 rounded-lg text-sm hover:bg-[#84cafe]"
+                >
+                  {isOpen ? "Kapat" : "Aç"}
+                </button>
               </div>
 
               <p className="text-[13px] text-gray-500">
-                {recipe.category} • {recipe.cooking_area} • {recipe.servings} porsiyon• {recipe.cooking_time} {recipe.time_type}
+                {mh.category} • {mh.cooking_area} • {mh.servings} porsiyon •{" "}
+                {mh.cooking_time} {mh.time_type}
               </p>
 
               {isOpen && (
-                <div className="text-[14px] text-gray-700 text-justify flex-1 mt-2 space-y-2">
-                  {/* TARİF AÇIKLAMASI */}
-                  <div>{recipe.description || "Tarif açıklaması bulunamadı."}</div>
+                <div className="text-[14px] text-gray-700 mt-2 space-y-2">
+                  <div>{mh.description || "Tarif açıklaması bulunamadı."}</div>
 
-                  {/* YAPILAN YEMEK BİLGİLERİ */}
-                  <div className="mt-2 border-t pt-2">
+                  <div className="mt-2 border-t pt-2 space-y-1">
                     <p className="text-[13px] text-gray-500">
-                      Yapılma Tarihi: <span className="font-medium">{mh.cooked_date}</span>
+                      <span className="font-semibold text-gray-700">Yapılma Tarihi:</span>{" "}
+                      {formatDate(mh.cooked_date)}
                     </p>
-                    <p className="text-[13px] text-gray-500">
-                      Puan: <span className="font-medium">{mh.rating ?? "-"}</span>
+
+                    <p className="text-[13px] text-gray-500 flex items-center gap-2">
+                      <span className="font-semibold text-gray-700">Puan:</span>
+                      <span className="flex gap-1">
+                        {renderStars(mh.rating)}
+                      </span>
                     </p>
+
                     <p className="text-[13px] text-gray-500">
-                      Yorum: <span className="font-medium">{mh.comment || "-"}</span>
+                      <span className="font-semibold text-gray-700">Yorum:</span>{" "}
+                      {mh.comment || "-"}
                     </p>
                   </div>
                 </div>

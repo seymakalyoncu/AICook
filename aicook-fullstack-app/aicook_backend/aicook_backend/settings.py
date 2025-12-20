@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'recipe_ingredients',
     'favorite_recipes',
     'meal_histories',
+    'reports',
+    'fridge_photos',
 ]
 
 MIDDLEWARE = [
@@ -174,3 +176,10 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES':[ 'rest_framework.renderers.JSONRenderer' ],
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated'),
 }
+
+# AWS Settings
+
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = env("AWS_REGION")  # Bucket oluşturduğun bölge
+AWS_BUCKET_NAME = env("AWS_BUCKET_NAME")

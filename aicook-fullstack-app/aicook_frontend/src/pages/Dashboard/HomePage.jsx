@@ -9,6 +9,8 @@ import { searchRecipes } from "../../services/recipes";
 import { toggleFavoriteRecipe, getFavoriteStatus } from "../../services/favorite_recipes";
 import { addMealHistory } from "../../services/meal_histories";
 import { useNavigate } from "react-router-dom";
+import Reports from "../../components/Reports";
+import FridgePhotoActions from "../../components/FridgePhotos/FridgePhotoActions";
 
 
 export default function HomePage() {
@@ -141,7 +143,7 @@ export default function HomePage() {
     <div>
     <Toaster  position="top-right" reverseOrder={false} />
       {/* SEARCH BAR */}
-      <div className="relative min-h-[calc(100vh-80px)] bg-background text-[#444444] px-8 py-12">
+      <div className="relative bg-background text-[#444444] px-8 py-12">
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex items-center gap-3 justify-center max-w-3xl mx-auto">
 
@@ -169,8 +171,10 @@ export default function HomePage() {
             />
           </div>
         </div>
+          <div className="mt-4 bg-white rounded-xl">
+            <Reports />
+          </div>
       </div>
-
       {/* FILTER MODAL */}
       {showFilter && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -432,14 +436,7 @@ export default function HomePage() {
             className="w-15 h-15 cursor-pointer hover:scale-110 transition" /> 
 
           {/* CENTER LENS */} 
-          <div className="relative flex flex-col items-center" ref={lensRef}> {lensOpen && ( 
-            <div className="flex items-center justify-between w-40 absolute -top-20 animate-fadeIn"> 
-              <img src="/camera.png" alt="camera" className="w-15 h-15 cursor-pointer hover:scale-110 transition" /> 
-              <img src="/folder.png" alt="folder" className="w-15 h-15 cursor-pointer hover:scale-110 transition" /> 
-            </div> )} 
-            <img src="/lens.png" alt="" onClick={() => setLensOpen(!lensOpen)} 
-              className="w-20 h-20 cursor-pointer hover:scale-110 transition active:scale-95 drop-shadow-xl" /> 
-          </div> 
+          <FridgePhotoActions />
           
           {/* RIGHT ICON */} 
          <img
@@ -522,44 +519,44 @@ export default function HomePage() {
               </button>
 
               <button
-  onClick={async () => {
-    if (!selectedRecipeForMeal || !user_id || !mealDate) {
-      toast.error("Tarih alanı boş olamaz!", { position: "top-right" });
-      return;
-    }
+                onClick={async () => {
+                  if (!selectedRecipeForMeal || !user_id || !mealDate) {
+                    toast.error("Tarih alanı boş olamaz!", { position: "top-right" });
+                    return;
+                  }
 
-    try {
-      const res = await addMealHistory(
-        {
-          recipe_id: selectedRecipeForMeal.id,
-          user_id: user_id,
-          cooked_date: mealDate,
-          rating: mealRating,
-          comment: mealComment,
-        },
-        token
-      );
+                try {
+                  const res = await addMealHistory(
+                    {
+                      recipe_id: selectedRecipeForMeal.id,
+                      user_id: user_id,
+                      cooked_date: mealDate,
+                      rating: mealRating,
+                      comment: mealComment,
+                    },
+                    token
+                  );
 
-      // ✅ Başarılı kayıt toast
-      toast.success("Yemek geçmişi kaydedildi!", { position: "top-right" });
+                  // ✅ Başarılı kayıt toast
+                  toast.success("Yemek geçmişi kaydedildi!", { position: "top-right" });
 
-      // Modal kapat ve alanları temizle
-      setShowMealModal(false);
-      setMealDate("");
-      setMealRating(0);
-      setHoverRating(0);
-      setMealComment("");
-      setSelectedRecipeForMeal(null);
+                  // Modal kapat ve alanları temizle
+                  setShowMealModal(false);
+                  setMealDate("");
+                  setMealRating(0);
+                  setHoverRating(0);
+                  setMealComment("");
+                  setSelectedRecipeForMeal(null);
 
-    } catch (e) {
-      console.error("Meal history kaydedilemedi", e);
-      toast.error("Kayıt sırasında hata oluştu!", { position: "top-right" });
-    }
-  }}
-  className="flex-1 px-6 py-2 rounded-xl border bg-[#4294ff] text-white hover:bg-[#84cafe]"
->
-  Kaydet
-</button>
+                } catch (e) {
+                  console.error("Meal history kaydedilemedi", e);
+                  toast.error("Kayıt sırasında hata oluştu!", { position: "top-right" });
+                }
+              }}
+              className="flex-1 px-6 py-2 rounded-xl border bg-[#4294ff] text-white hover:bg-[#84cafe]"
+            >
+              Kaydet
+            </button>
             </div>
           
           </div>
