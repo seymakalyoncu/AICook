@@ -2,11 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.db.models.functions import Coalesce
 from .models import MealHistories
 from .serializers import MealHistorySerializer
 from users.models import Users
 from recipes.models import Recipes
+from django.db.models import F
 
 # Kayıt oluşturma
 class MealHistoryCreateView(APIView):
@@ -56,7 +56,7 @@ class MealHistoryListView(APIView):
             MealHistories.objects
             .filter(user=users_obj)
             .annotate(
-                order_date=Coalesce("update_date", "create_date")
+                order_date=F("cooked_date")
             )
             .select_related(
                 "recipe",

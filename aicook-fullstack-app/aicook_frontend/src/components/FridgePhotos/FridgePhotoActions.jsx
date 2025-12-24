@@ -11,12 +11,10 @@ export default function FridgePhotoActions() {
 
   return (
     <>
-      {/* CENTER LENS */}
       <div className="relative flex flex-col items-center" ref={lensRef}>
         {lensOpen && (
           <div className="flex items-center justify-between w-40 absolute -top-20 animate-fadeIn">
             
-            {/* CAMERA */}
             <img
               src="/camera.png"
               alt="camera"
@@ -27,7 +25,6 @@ export default function FridgePhotoActions() {
               }}
             />
 
-            {/* FOLDER */}
             <img
               src="/folder.png"
               alt="folder"
@@ -48,7 +45,6 @@ export default function FridgePhotoActions() {
         />
       </div>
 
-      {/* MODALS */}
       {showUploadModal && (
         <UploadFromDeviceModal
           onClose={() => setShowUploadModal(false)}

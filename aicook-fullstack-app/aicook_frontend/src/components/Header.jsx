@@ -151,6 +151,28 @@ const Header = () => {
                 )}
               </div>
 
+               <div
+                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                        setLeftMenuOpen(false);
+                        navigate("/photo/download");
+                      }}
+              >
+                <img src="/download.png" className="w-5 h-5" alt="fotograf" />
+                <span>Fotoğraflar</span>
+              </div>
+
+              <div
+                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                        setLeftMenuOpen(false);
+                        navigate("/report");
+                      }}
+              >
+                <img src="/pie-chart.png" className="w-5 h-5" alt="chart" />
+                <span>Raporlar</span>
+              </div>
+
               {/* ÇIKIŞ */}
               <div
                 className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"

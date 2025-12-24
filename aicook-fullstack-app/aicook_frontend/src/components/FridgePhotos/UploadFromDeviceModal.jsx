@@ -37,7 +37,6 @@ export default function UploadFromDeviceModal({ onClose }) {
       <div className="bg-white p-6 rounded-xl w-96">
         <h3 className="text-2xl font-semibold text-[#444444] mb-6 leading-snug tracking-wide">Fotoğraf Yükle</h3>
 
-        {/* FILE INPUT */}
         <label className="block border border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50 transition">
           <input
             type="file"
@@ -50,7 +49,6 @@ export default function UploadFromDeviceModal({ onClose }) {
           </span>
         </label>
 
-        {/* PREVIEW */}
         {preview && (
           <img
             src={preview}
@@ -59,22 +57,35 @@ export default function UploadFromDeviceModal({ onClose }) {
           />
         )}
 
-        {/* ACTIONS */}
         <div className="flex justify-end gap-2 mt-6">
           <button
             onClick={onClose}
             disabled={loading}
-            className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]"
+            className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] hover:bg-[#f5f5f5]"
           >
             İptal
           </button>
 
           <button
-            onClick={handleUpload}
+            onClick={async () => {
+              if (!file) return;
+
+              try {
+                setLoading(true);
+                const res = await uploadFridgePhoto(file, null, token);
+
+                window.location.href = `/fridge-analysis/${res.data.id}`;
+              } catch (err) {
+                console.error("Fotoğraf yüklenemedi veya analiz yapılamadı", err);
+                alert("Fotoğraf yüklenemedi veya analiz yapılamadı");
+              } finally {
+                setLoading(false);
+              }
+            }}
             disabled={!file || loading}
-            className="flex-1 px-6 py-2 rounded-xl border bg-[#4294ff] text-white px-6 py-2 rounded-xl hover:bg-[#84cafe]"
+            className="bg-[#4294ff] text-white px-6 py-2 rounded-lg text-sm hover:bg-[#84cafe]"
           >
-            {loading ? "Yükleniyor..." : "Yükle"}
+            {loading ? "Yükleniyor..." : "Yükle ve Malzeme Tespit Et"}
           </button>
         </div>
       </div>

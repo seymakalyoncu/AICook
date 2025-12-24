@@ -10,12 +10,14 @@ import VerifyEmailPage from './pages/Authentication/VerifyEmailPage'
 import HomePage from "./pages/Dashboard/HomePage";
 import UserEdit from "./pages/Dashboard/UserEdit";
 import UserChangePassword from "./pages/Dashboard/UserChangePassword";
+import PhotoDownload from "./pages/Dashboard/PhotoDownload";
+import Reports from "./pages/Dashboard/Reports";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ArticlePage from './pages/Dashboard/ArticlesPage';
 import FavoriteRecipes from "./pages/Dashboard/FavoriteRecipes";
 import HistoryRecipes from "./pages/Dashboard/HistoryRecipes";
-
+import FridgeAnalysis from "./pages/Dashboard/FridgeAnalysis";
 
 function App() {
   return (
@@ -37,8 +39,11 @@ function App() {
             <Route path="/" element={<HomePage />} />     
             <Route path="/user/edit" element={<UserEdit />} />
             <Route path="/user/change-password" element={<UserChangePassword />} />
+            <Route path="/photo/download" element={<PhotoDownload />} />
+            <Route path="/report" element={<Reports />} />
             <Route path="/favorites" element={<FavoriteRecipes />} />
             <Route path="/histories" element={<HistoryRecipes />} />
+            <Route path="/fridge-analysis/:photoId" element={<FridgeAnalysis />} />
           </Route>
         </Routes>
       </Router>

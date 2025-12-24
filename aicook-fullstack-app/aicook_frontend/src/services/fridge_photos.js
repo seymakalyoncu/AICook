@@ -9,7 +9,7 @@ export const uploadFridgePhoto = (file, description, token) => {
   }
 
   return api.post(
-    "/api/fridge-photos/upload/",
+    "/api/fridge_photos/upload/",
     formData,
     {
       headers: {
@@ -19,3 +19,5 @@ export const uploadFridgePhoto = (file, description, token) => {
     }
   );
 };
+
+export const getFridgePhotos = (token) => {return api.get("/api/fridge_photos/list/", {headers: {Authorization: `Bearer ${token}`,},});};

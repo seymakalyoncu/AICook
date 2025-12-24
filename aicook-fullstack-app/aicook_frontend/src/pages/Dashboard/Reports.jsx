@@ -4,7 +4,7 @@ import {
   getHistoryDateReport,
   getHistoryIngredientListReport,
   getHistoryRatingListReport,
-} from "../services/reports";
+} from "../../services/reports";
 
 import {
   LineChart,
@@ -21,7 +21,6 @@ import {
   Bar,
 } from "recharts";
 
-/* 🎨 KOYU MAVİ PASTA RENKLERİ */
 const PIE_COLORS = [
   "#1a3752",
   "#232328",
@@ -32,15 +31,14 @@ const PIE_COLORS = [
   "#0f2a44",
 ];
 
-/* 🗓️ Tarih format */
 const formatDate = (dateStr) =>
   dateStr ? new Date(dateStr).toLocaleDateString("tr-TR") : "";
 
-/* 💬 ORTAK TOOLTIP COMPONENT */
-const CustomTooltip = ({ active, payload, label, type }) => {
+const CustomTooltip = ({ active, payload, type }) => {
   if (!active || !payload || !payload.length) return null;
 
   const value = payload[0].value;
+  const name = payload[0].name;
 
   let text = "";
 
@@ -50,9 +48,9 @@ const CustomTooltip = ({ active, payload, label, type }) => {
   if (type === "ingredient") text = `Kullanım Sayısı: ${value}`;
 
   return (
-    <div className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] bg-white text-sm">
-      {type !== "date" && type !== "ingredient" && (
-        <div className="font-medium mb-1">{label}</div>
+    <div className="px-4 py-2 rounded-xl border border-[#DDDDDD] bg-white text-sm text-[#444444]">
+      {(type === "category" || type === "rating") && (
+        <div className="font-medium mb-1">{name}</div>
       )}
 
       <div>{text}</div>
@@ -82,13 +80,9 @@ export default function Reports() {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-semibold text-[#444444] mb-6 text-center">
-        Analiz Raporları
+        Yemek Analiz Raporları
       </h2>
-
-      {/* ================= 1. SATIR ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-
-        {/* TARİH */}
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
             (Son 30 Gün) Yemek Yapma Tarihine Göre Yemek Sayısı
@@ -114,7 +108,6 @@ export default function Reports() {
           </ResponsiveContainer>
         </div>
 
-        {/* KATEGORİ */}
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
             (Son 30 Gün) Yemek Kategorisine Göre Yemek Sayısı
@@ -138,10 +131,7 @@ export default function Reports() {
         </div>
       </div>
 
-      {/* ================= 2. SATIR ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        {/* PUAN */}
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
             (Son 30 Gün) Yemek Kategorisine Göre Ortalama Puan
@@ -164,7 +154,6 @@ export default function Reports() {
           </ResponsiveContainer>
         </div>
 
-        {/* MALZEME */}
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
             (Son 30 Gün) Malzeme Kullanım Sayıları

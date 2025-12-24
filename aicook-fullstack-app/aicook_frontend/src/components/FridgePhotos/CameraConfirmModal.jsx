@@ -8,7 +8,7 @@ export default function CameraConfirmModal({ onClose }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const [step, setStep] = useState("confirm"); // confirm | camera | preview
+  const [step, setStep] = useState("confirm"); 
   const [stream, setStream] = useState(null);
   const [imageBlob, setImageBlob] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,14 +27,13 @@ export default function CameraConfirmModal({ onClose }) {
     }
   };
 
-  // 🎥 Stream → Video bağla (ÇOK KRİTİK)
   useEffect(() => {
     if (step === "camera" && videoRef.current && stream) {
       videoRef.current.srcObject = stream;
     }
   }, [step, stream]);
 
-  // 📷 Fotoğraf çek
+
   const capturePhoto = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -52,14 +51,12 @@ export default function CameraConfirmModal({ onClose }) {
     }, "image/jpeg");
   };
 
-  // 🛑 Kamera kapat
   const stopCamera = () => {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
   };
 
-  // ⬆️ Upload
   const handleUpload = async () => {
     if (!imageBlob) return;
 
@@ -78,7 +75,6 @@ export default function CameraConfirmModal({ onClose }) {
     }
   };
 
-  // Modal kapanınca kamera kapansın
   useEffect(() => {
     return () => stopCamera();
   }, []);
@@ -87,7 +83,6 @@ export default function CameraConfirmModal({ onClose }) {
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-xl w-96 text-center">
         <canvas ref={canvasRef} className="hidden" />
-        {/* STEP 1 – CONFIRM */}
         {step === "confirm" && (
           <>
             <p className="text-[16px] text-[#444444] mb-8 mt-2">
@@ -112,7 +107,6 @@ export default function CameraConfirmModal({ onClose }) {
           </>
         )}
 
-        {/* STEP 2 – CAMERA */}
         {step === "camera" && (
           <>
             <video
@@ -144,7 +138,6 @@ export default function CameraConfirmModal({ onClose }) {
           </>
         )}
 
-        {/* STEP 3 – PREVIEW */}
         {step === "preview" && (
           <>
             <canvas ref={canvasRef} className="hidden" />
@@ -164,11 +157,28 @@ export default function CameraConfirmModal({ onClose }) {
               </button>
 
               <button
-                onClick={handleUpload}
+                onClick={async () => {
+                  if (!imageBlob) return;
+
+                  const file = new File([imageBlob], "camera-photo.jpg", {
+                    type: "image/jpeg",
+                  });
+
+                  try {
+                    setLoading(true);
+                    const res = await uploadFridgePhoto(file, null, token);
+
+                    window.location.href = `/fridge-analysis/${res.data.id}`;
+                  } catch (err) {
+                    alert("Fotoğraf yüklenemedi veya analiz yapılamadı");
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
                 disabled={loading}
-                className="flex-1 py-2 rounded-xl bg-[#4294ff] text-white hover:bg-[#84cafe]"
+                className="bg-[#4294ff] text-white px-6 py-2 rounded-lg text-sm hover:bg-[#84cafe]"
               >
-                {loading ? "Yükleniyor..." : "Yükle"}
+                {loading ? "Yükleniyor..." : "Yükle ve Malzeme Tespit Et"}
               </button>
             </div>
           </>

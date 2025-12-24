@@ -3,21 +3,16 @@ import boto3
 from django.conf import settings
 from botocore.exceptions import ClientError
 
-
-s3_client = boto3.client(
-    "s3",
-    region_name=settings.AWS_REGION
-)
-
+s3_client = boto3.client("s3", region_name=settings.AWS_REGION)
 
 def upload_file_to_s3(file_obj, user_id):
     """
     Dosyayı S3'e yükler ve public URL döner
     """
     try:
+
         file_extension = file_obj.name.split(".")[-1]
         file_name = f"{uuid.uuid4()}.{file_extension}"
-
         object_name = f"fridge-photos/user_{user_id}/{file_name}"
 
         s3_client.upload_fileobj(
@@ -35,3 +30,21 @@ def upload_file_to_s3(file_obj, user_id):
     except ClientError as e:
         print("S3 upload error:", e)
         return None
+
+def generate_presigned_url(db_url, expires=3600):
+
+    base = f"{settings.AWS_BUCKET_NAME}.s3.{settings.AWS_REGION}.amazonaws.com/"
+    
+    if base not in db_url:
+        raise ValueError("Invalid S3 URL format")
+
+    object_name = db_url.split(base, 1)[1]
+
+    return s3_client.generate_presigned_url(
+        "get_object",
+        Params={
+            "Bucket": settings.AWS_BUCKET_NAME,
+            "Key": object_name,
+        },
+        ExpiresIn=expires,
+    )

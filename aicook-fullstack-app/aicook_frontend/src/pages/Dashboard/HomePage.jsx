@@ -9,7 +9,7 @@ import { searchRecipes } from "../../services/recipes";
 import { toggleFavoriteRecipe, getFavoriteStatus } from "../../services/favorite_recipes";
 import { addMealHistory } from "../../services/meal_histories";
 import { useNavigate } from "react-router-dom";
-import Reports from "../../components/Reports";
+import RecommendationStatus from "../../components/RecommendationStatus";
 import FridgePhotoActions from "../../components/FridgePhotos/FridgePhotoActions";
 
 
@@ -143,21 +143,34 @@ export default function HomePage() {
     <div>
     <Toaster  position="top-right" reverseOrder={false} />
       {/* SEARCH BAR */}
-      <div className="relative bg-background text-[#444444] px-8 py-12">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="flex items-center gap-3 justify-center max-w-3xl mx-auto">
+      <div className="bg-gray-50 px-8 py-8 border-b border-gray-200">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center gap-3">
 
             <div className="relative w-full">
               <img
                 src="/search.png"
                 alt=""
-                className="w-6 h-6 absolute left-3 top-2.5 cursor-pointer"
+                className="w-5 h-5 absolute left-3 top-3 cursor-pointer opacity-70"
                 onClick={() => handleSearch(false)}
               />
+
               <input
                 type="text"
-                placeholder="Malzemeleri aralarında ; olacak şekilde yazınız... (örn: yeşil mercimek;patates)"
-                className="w-full border px-3 py-2 rounded-lg pl-12"
+                placeholder="Malzemeleri aralarında ; olacak şekilde yazınız..."
+                className="
+                  w-full
+                  bg-white
+                  border
+                  border-gray-300
+                  rounded-lg
+                  pl-11
+                  px-3
+                  py-2.5
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-orange-400
+                "
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
@@ -167,14 +180,16 @@ export default function HomePage() {
               src="/filter.png"
               alt=""
               onClick={() => setShowFilter(true)}
-              className="w-9 h-9 cursor-pointer"
+              className="w-9 h-9 cursor-pointer opacity-80 hover:opacity-100"
             />
           </div>
         </div>
-          <div className="mt-4 bg-white rounded-xl">
-            <Reports />
-          </div>
       </div>
+
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        <RecommendationStatus />
+      </div>
+      
       {/* FILTER MODAL */}
       {showFilter && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -277,12 +292,12 @@ export default function HomePage() {
                   setSelectedTimeType("");
                   setCookTime(null);
                 }}
-                className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]"
+                className="flex-1 border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]"
               >
                 Temizle
               </button>
               <button onClick={() => setShowFilter(false)} 
-                className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]">
+                className="flex-1  border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]">
                   Kapat
               </button>
               <button
@@ -290,7 +305,7 @@ export default function HomePage() {
                   handleSearch(true); // filter search
                   setShowFilter(false);
                 }}
-                className="flex-1 px-6 py-2 rounded-xl border bg-[#4294ff] text-white px-6 py-2 rounded-xl hover:bg-[#84cafe]"
+                className="flex-1 border bg-[#4294ff] text-white px-6 py-2 rounded-xl hover:bg-[#84cafe]"
               >
                 Uygula
               </button>

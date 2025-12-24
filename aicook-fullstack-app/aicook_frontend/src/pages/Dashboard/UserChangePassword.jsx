@@ -31,7 +31,7 @@ const ChangePasswordFormPage = () => {
   return (
     <div>
       <div className="p-6">
-        <Toaster />
+        <Toaster position="top-right"/>
         <h1 className="text-2xl font-semibold text-[#444444] mb-6 leading-snug tracking-wide">
           Şifre Değiştir
         </h1>

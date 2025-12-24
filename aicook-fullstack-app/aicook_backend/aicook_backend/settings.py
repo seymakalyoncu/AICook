@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'meal_histories',
     'reports',
     'fridge_photos',
+    'recommendation',
 ]
 
 MIDDLEWARE = [
