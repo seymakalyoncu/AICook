@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import date, datetime, timedelta
 from .feature_extractor import extract_features
 
+#  geçmiş veriden TRAIN datası üretmek
 def build_user_dataset(recipes, meal_histories, favorite_recipe_ids, exclude_last_days=2):
 
     data = []
@@ -25,7 +26,7 @@ def build_user_dataset(recipes, meal_histories, favorite_recipe_ids, exclude_las
         last_cooked_days_ago = (today - max(cooked_dates)).days if cooked_dates else -1
         is_favorite = 1 if recipe.id in favorite_recipe_ids else 0
 
-        label = 1 if (avg_rating >= 9 and is_favorite) else 0
+        label = 1 if (avg_rating >= 7 and is_favorite) else 0
 
         row = {
             "recipe_id": recipe.id,

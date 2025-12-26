@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from "react-hot-toast";
 import { getGender } from "../../services/gender";
 import { getUserById, updateUser } from "../../services/users"; 
-import { getFridgePhotos } from "../../services/meal_histories";
 import { updateUsers } from '../../services/accounts';
 
 const UserEditPage = () => {

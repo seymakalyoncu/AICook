@@ -11,16 +11,18 @@ from django.conf import settings
 from .models import FridgePhotos
 from .services.s3_service import upload_file_to_s3, generate_presigned_url
 from fridge_photos.services.photo_analysis import analyze_photo
+from rest_framework.parsers import MultiPartParser, FormParser
 from .yolo.detect import detect_ingredients
 
 
 class FridgePhotoUploadView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
         file_obj = request.FILES.get("file")
-        description = request.data.get("description")
+        description = request.data.get("description") if request.data else None
 
         user = request.user
 

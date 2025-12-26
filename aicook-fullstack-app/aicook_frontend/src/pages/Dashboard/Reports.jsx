@@ -85,7 +85,7 @@ export default function Reports() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
-            (Son 30 Gün) Yemek Yapma Tarihine Göre Yemek Sayısı
+            (Son 7 Gün) Yemek Yapma Tarihine Göre Yemek Sayısı
           </p>
 
           <ResponsiveContainer width="100%" height={260}>
@@ -110,7 +110,7 @@ export default function Reports() {
 
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
-            (Son 30 Gün) Yemek Kategorisine Göre Yemek Sayısı
+            (Son 10 Gün) Yemek Kategorisine Göre Yemek Sayısı
           </p>
 
           <ResponsiveContainer width="100%" height={260}>
@@ -134,7 +134,7 @@ export default function Reports() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
-            (Son 30 Gün) Yemek Kategorisine Göre Ortalama Puan
+            (Son 10 Gün) Yemek Kategorisine Göre Ortalama Puan
           </p>
 
           <ResponsiveContainer width="100%" height={260}>
@@ -156,7 +156,7 @@ export default function Reports() {
 
         <div className="bg-white border border-[#DDDDDD] rounded-lg p-4">
           <p className="text-[13px] font-medium mb-2">
-            (Son 30 Gün) Malzeme Kullanım Sayıları
+            (Son 7 Gün) (İlk 5 Malzeme) Malzeme Kullanım Sayıları
           </p>
 
           <ResponsiveContainer width="100%" height={300}>

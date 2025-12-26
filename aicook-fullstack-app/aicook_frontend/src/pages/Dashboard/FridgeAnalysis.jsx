@@ -180,7 +180,7 @@ const FridgeAnalysis = () => {
                         {item.recipe_ingredient_list.map((ing, idx) => (
                           <span
                             key={ing.id}
-                            className={ing.selected ? "text-black" : "text-red-500"}
+                            className={ing.selected ? "#1a3752" : "text-red-500"}
                           >
                             {ing.name}
                             {idx < item.recipe_ingredient_list.length - 1 && " - "}
@@ -301,6 +301,121 @@ const FridgeAnalysis = () => {
                 Ekle
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {showMealModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
+          <div className="bg-white w-[90%] max-w-sm rounded-2xl p-5 shadow-xl">
+
+            {/* HEADER */}
+            <h3 className="text-2xl font-semibold text-[#444444] mb-6">
+              Yemek Yapılma Bilgisi
+            </h3>
+
+            {/* TARİH */}
+            <div className="mb-3">
+              <label className="text-[14px]">
+                Yemek Yapılma Tarihi
+              </label>
+              <input
+                type="date"
+                value={mealDate}
+                onChange={(e) => setMealDate(e.target.value)}
+                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
+              />
+            </div>
+
+            {/* PUAN */}
+            <div className="mb-4">
+              <label className="text-[14px]">
+                Puan
+              </label>
+
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(star => (
+                  <img
+                    key={star}
+                    src={
+                      (hoverRating || mealRating) >= star
+                        ? "/star_blue.png"
+                        : "/star.png"
+                    }
+                    alt="star"
+                    className="w-6 h-6 cursor-pointer transition-transform duration-150
+                              hover:scale-110"
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => setMealRating(star)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* YORUM */}
+            <div className="mb-4">
+              <label className="text-[14px]">
+                Yorum
+              </label>
+              <textarea
+                rows="2"
+                value={mealComment}
+                onChange={(e) => setMealComment(e.target.value)}
+                placeholder="Yemek nasıl oldu?"
+                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e6ecff]"
+              />
+            </div>
+
+            {/* BUTTONS */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowMealModal(false)}
+                className="flex-1 px-6 py-2 rounded-xl border border-[#DDDDDD] text-[#444444] px-6 py-2 rounded-xl hover:bg-[#f5f5f5]"
+              >
+                Vazgeç
+              </button>
+
+              <button
+                onClick={async () => {
+                  if (!selectedRecipeForMeal || !user_id || !mealDate) {
+                    toast.error("Tarih alanı boş olamaz!", { position: "top-right" });
+                    return;
+                  }
+
+                try {
+                  const res = await addMealHistory(
+                    {
+                      recipe_id: selectedRecipeForMeal.id,
+                      user_id: user_id,
+                      cooked_date: mealDate,
+                      rating: mealRating,
+                      comment: mealComment,
+                    },
+                    token
+                  );
+
+                  // ✅ Başarılı kayıt toast
+                  toast.success("Yemek kaydedildi!", { position: "top-right" });
+
+                  // Modal kapat ve alanları temizle
+                  setShowMealModal(false);
+                  setMealDate("");
+                  setMealRating(0);
+                  setHoverRating(0);
+                  setMealComment("");
+                  setSelectedRecipeForMeal(null);
+
+                } catch (e) {
+                  console.error("Meal history kaydedilemedi", e);
+                  toast.error("Kayıt sırasında hata oluştu!", { position: "top-right" });
+                }
+              }}
+              className="flex-1 px-6 py-2 rounded-xl border bg-[#4294ff] text-white hover:bg-[#84cafe]"
+            >
+              Kaydet
+            </button>
+            </div>
+          
           </div>
         </div>
       )}

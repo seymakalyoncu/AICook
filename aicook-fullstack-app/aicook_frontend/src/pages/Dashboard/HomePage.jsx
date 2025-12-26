@@ -169,7 +169,7 @@ export default function HomePage() {
                   py-2.5
                   focus:outline-none
                   focus:ring-2
-                  focus:ring-orange-400
+                  focus:#b8e3fe
                 "
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}

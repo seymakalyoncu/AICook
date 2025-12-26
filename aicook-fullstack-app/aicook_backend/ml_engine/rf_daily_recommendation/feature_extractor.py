@@ -1,6 +1,7 @@
 import numpy as np
 from datetime import datetime
 
+# RECIPE + GEÇMİŞ DAVRANIŞ → FEATURE
 def extract_features(recipe, user_histories, user_favorites):
 
     cooked_count = sum(1 for h in user_histories if h.recipe_id == recipe.id)

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { changePassword } from '../../services/accounts';
-import Header from "../../components/Header";
 
 const ChangePasswordFormPage = () => {
   const token = localStorage.getItem("token");

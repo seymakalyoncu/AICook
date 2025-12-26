@@ -25,7 +25,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "10.0.2.2",]
 
 
 # Application definition
