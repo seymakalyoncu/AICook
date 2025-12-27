@@ -1,27 +1,19 @@
-// src/context/AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null); // burada localStorage da kontrol edebilirsin
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('token');
+  });
 
-   // Sayfa yüklendiğinde localStorage kontrolü
-   useEffect(() => {
-    const storedToken  = localStorage.getItem('token');
-    if (storedToken ) {
-      setToken(storedToken);
-    }
-  }, []);
-
-  const login = (newtoken) => {
-    localStorage.setItem('token', newtoken);
-    setToken(newtoken);
+  const login = (newToken) => {
+    localStorage.setItem('token', newToken);
+    setToken(newToken);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    localStorage.clear();
     setToken(null);
   };
 

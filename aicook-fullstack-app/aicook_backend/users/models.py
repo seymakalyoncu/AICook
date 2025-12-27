@@ -14,10 +14,9 @@ class Users(models.Model):
     birth_year = models.IntegerField(db_column='birth_year')  # Field name made lowercase.
     email = models.CharField(db_column='eMail', max_length=255)  # Field name made lowercase.
     createddate = models.DateTimeField(db_column='create_date', auto_now_add=True)  # Field name made lowercase.
-    updateddate = models.DateTimeField(db_column='update_date', blank=True, null=True)  # Field name made lowercase.
+    updateddate = models.DateTimeField(db_column='update_date', auto_now=True)  # Field name made lowercase.
     user_id = models.ForeignKey(User, models.DO_NOTHING, db_column='user_id')
     
     class Meta:
-        managed = False
         db_table = 'users'
         db_table_comment = 'Kullanıcıların Bilgisi'
