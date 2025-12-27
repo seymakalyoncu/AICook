@@ -180,7 +180,7 @@ const FridgeAnalysis = () => {
                         {item.recipe_ingredient_list.map((ing, idx) => (
                           <span
                             key={ing.id}
-                            className={ing.selected ? "#1a3752" : "text-red-500"}
+                            className={ing.selected ? "#1     : "text-red-500"}
                           >
                             {ing.name}
                             {idx < item.recipe_ingredient_list.length - 1 && " - "}

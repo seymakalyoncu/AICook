@@ -2,7 +2,7 @@
 from .model import model
 from ingredients.models import Ingredients
 
-CONFIDENCE_THRESHOLD = 0.3  # minimum confidence seviyesi
+CONFIDENCE_THRESHOLD = 0.3  # minimum confidence seviyesi tahmin skoru
 
 def detect_ingredients(image_path):
     """
